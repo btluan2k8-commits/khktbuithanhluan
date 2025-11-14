@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>Cong Chiêng Tuner – Mobile Ready</title>
+
+  <!-- ÉP CHUYỂN SANG HTTPS VỚI DOMAIN khktbuithanhluan -->
+  <script>
+    (function(){
+      // Không chặn khi chạy trên file:// hoặc localhost (dev)
+      if (location.protocol === 'http:' &&
+          location.hostname !== 'localhost' &&
+          location.hostname !== '127.0.0.1') {
+
+        // Nếu bạn muốn domain chính là khktbuithanhluan (vd: https://khktbuithanhluan)
+        var newUrl = 'https://khktbuithanhluan' + location.pathname + location.search + location.hash;
+        location.replace(newUrl);
+      }
+    })();
+  </script>
+
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --bg:#0f172a;
+      --accent:#2563eb;
+      --accent-soft:#dbeafe;
+      --danger:#dc2626;
+      --success:#16a34a;
+      --warning:#eab308;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",sans-serif;
+      color:var(--ink);
+      background:radial-gradient(circle at top left,#1e293b,#020617 50%, #020617 100%);
+      min-height:100vh;
+    }
+    .page{
+      max-width:1120px;
+      margin:16px auto;
+      padding:16px;
+      border-radius:20px;
+      background:linear-gradient(180deg,#f9fafb,#e5e7eb);
+      box-shadow:0 16px 40px rgba(15,23,42,.6);
+    }
+    @media(max-width:640px){
+      .page{
+        margin:0;
+        border-radius:0;
+        min-height:100vh;
+        box-shadow:none;
+      }
+    }
+    h1{
+      margin:0 0 4px;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.03em;
+      color:#0b1120;
+    }
+    @media(min-width:720px){
+      h1{ font-size:28px; }
+    }
+    .subtitle{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.5);
+      background:rgba(15,23,42,.03);
+      font-size:11px;
+      color:var(--muted);
+    }
+    .row{ display:grid; gap:12px; }
+    .row.cols-2, .row.cols-3{
+      grid-template-columns:1fr;
+    }
+    @media(min-width:960px){
+      .row.cols-2{ grid-template-columns:1.4fr 1.6fr; }
+      .row.cols-3{ grid-template-columns:repeat(3,1fr); }
+    }
+    .card{
+      background:#ffffff;
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:16px;
+      box-shadow:0 8px 24px rgba(15,23,42,.06);
+      padding:12px 12px 10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(circle at top right,rgba(129,140,248,.14),transparent 60%);
+      opacity:.5;
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+
+    .btn{
+      border:1px solid transparent;
+      color:#fff;
+      background:var(--accent);
+      padding:9px 13px;
+      border-radius:999px;
+      font-weight:600;
+      cursor:pointer;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      transition:all .15s ease;
+      box-shadow:0 6px 14px rgba(37,99,235,.35);
+      text-align:center;
+    }
+    .btn.ghost{
+      background:#fff;
+      color:var(--ink);
+      border-color:rgba(148,163,184,.8);
+      box-shadow:none;
+    }
+    .btn.sm{
+      padding:7px 10px;
+      font-size:12px;
+      box-shadow:none;
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      box-shadow:none;
+      transform:none;
+    }
+    @media(max-width:640px){
+      .btn, .btn.sm{
+        width:100%;
+      }
+    }
+    .field{
+      width:100%;
+      padding:9px 11px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font:inherit;
+      font-size:13px;
+      background:#f9fafb;
+      transition:all .12s ease;
+    }
+    .field:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(37,99,235,.25);
+      background:#fff;
+    }
+    .label{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .grid3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:6px;
+      text-align:center;
+    }
+    @media(max-width:480px){
+      .grid3{ grid-template-columns:repeat(2,1fr); }
+    }
+    .pill{
+      padding:8px 9px;
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:14px;
+      background:rgba(248,250,252,.95);
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    th,td{
+      padding:7px 8px;
+      border-top:1px solid rgba(226,232,240,.9);
+      text-align:left;
+    }
+    th{
+      background:#f8fafc;
+      font-weight:600;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    .needleWrap{
+      position:relative;
+      height:150px;
+      margin-top:4px;
+    }
+    @media(min-width:720px){
+      .needleWrap{ height:160px; }
+    }
+    .needleDial{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+    }
+    .needleArc{
+      width:220px;
+      height:110px;
+      border-radius:220px 220px 0 0;
+      border:2px solid rgba(203,213,225,.9);
+      border-bottom:none;
+      background:radial-gradient(circle at top,#eff6ff,#ffffff);
+    }
+    .needle{
+      width:3px;
+      height:100px;
+      background:linear-gradient(180deg,var(--accent),#1d4ed8);
+      transform-origin:bottom center;
+      border-radius:999px;
+      box-shadow:0 0 0 1px rgba(15,23,42,.14);
+      transition:transform .08s linear;
+    }
+    canvas{
+      display:block;
+      width:100%;
+      background:radial-gradient(circle at top,#eff6ff,#ffffff);
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:12px;
+    }
+    .advice-box{
+      margin-top:8px;
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:13px;
+      line-height:1.5;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .advice-title{
+      font-weight:700;
+    }
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+    }
+    .chip{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      background:#e5e7eb;
+      color:#111827;
+    }
+    #micStatus{
+      margin-top:4px;
+      font-size:11px;
+      color:#6b7280;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap;">
+    <div>
+      <div class="badge">
+        <span>🛠️ Công cụ thử nghiệm</span>
+        <span>Cong Chiêng Tuner</span>
+      </div>
+      <h1>Công cụ chỉnh & phân tích Cồng Chiêng</h1>
+      <p class="subtitle">
+        Ghi âm làm chuẩn theo từng chiêng, so sánh tần số, đo độ ngân (RT60) và xem phổ – tối ưu cho dàn chiêng thực tế, dùng được trên điện thoại.
+      </p>
+      <div id="micStatus">(Mic chưa khởi tạo)</div>
+    </div>
+  </header>
+
+  <!-- HÀNG 1: Bộ chiêng / Chiêng / Hướng dẫn -->
+  <section class="row cols-3" style="margin-bottom:12px;">
+    <div class="card">
+      <div class="label">Bộ Chiêng</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <select id="selSet" class="field" style="flex:1 1 140px;"></select>
+        <button id="btnAddSet" class="btn ghost sm" style="flex:0 0 auto;">+ Bộ</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Chiêng mục tiêu</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <select id="selItem" class="field" style="flex:1 1 140px;"></select>
+        <button id="btnAddItem" class="btn ghost sm" style="flex:0 0 auto;">+ Chiêng</button>
+      </div>
+      <div style="margin-top:6px;">
+        <div class="label">Tần số mục tiêu (Hz)</div>
+        <input id="inpTargetHz" type="number" step="0.01" class="field" />
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btnRecordRef" class="btn sm">
+            🎯 Ghi âm làm chuẩn (≈5s)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Gợi ý thao tác</div>
+      <ul class="small" style="margin:0 0 0 16px; padding:0; line-height:1.6;">
+        <li>Dùng tai nghe Bluetooth <b>không</b> ảnh hưởng vì app chỉ thu mic, không phát ngược.</li>
+        <li>Giữ điện thoại cách chiêng khoảng 0.5–1.5m, tránh che mic.</li>
+        <li>Gõ từng chiêng riêng lẻ khi đo, không để chiêng khác rung theo.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HÀNG 2: Upload file -->
+  <section class="card" style="margin-bottom:12px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+      <div style="flex:1 1 200px;">
+        <div class="label">Tải file âm thanh (WAV/MP3)</div>
+        <div class="small">
+          Hệ thống sẽ phân tích <b>f0</b>, <b>spectral centroid</b> và <b>RT60</b>. Có thể đặt f0 làm chuẩn cho chiêng đang chọn.
+        </div>
+      </div>
+      <label class="btn ghost sm" style="flex:0 0 auto;">
+        📁 Chọn file…
+        <input id="fileInput" type="file" accept="audio/*" style="display:none;" />
+      </label>
+    </div>
+    <div id="fileSummary" class="row cols-3" style="margin-top:8px; display:none; gap:6px;">
+      <div class="pill">
+        <div class="small">File</div>
+        <div id="sumName" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
+      </div>
+      <div class="pill">
+        <div class="small">f0 ước lượng</div>
+        <div id="sumF0"></div>
+      </div>
+      <div class="pill">
+        <div class="small">Centroid</div>
+        <div id="sumCentroid"></div>
+      </div>
+      <div class="pill">
+        <div class="small">RT60 ~</div>
+        <div id="sumRT60"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HÀNG 3: Tuner + Phổ -->
+  <section class="row cols-2" style="margin-bottom:12px;">
+    <!-- Tuner -->
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+        <div>
+          <div class="label">Độ lệch so với chuẩn</div>
+          <div class="chip-row">
+            <div class="chip">Mic live</div>
+            <div class="chip">Auto bắt bồi âm gần chuẩn</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; width:100%; max-width:260px;">
+          <button id="btnStart" class="btn sm" style="flex:1 1 120px;">🎙 Bắt đầu</button>
+          <button id="btnStop" class="btn ghost sm" style="flex:1 1 120px;">⏹ Dừng</button>
+        </div>
+      </div>
+
+      <div class="needleWrap">
+        <div class="needleDial"><div class="needleArc"></div></div>
+        <div class="needleDial"><div id="needle" class="needle"></div></div>
+      </div>
+
+      <div class="grid3" style="margin-top:8px;">
+        <div class="pill">
+          <div class="small">Tần số đo</div>
+          <div id="measHz" style="font-weight:700; font-size:17px;">— Hz</div>
+        </div>
+        <div class="pill">
+          <div class="small">Mục tiêu</div>
+          <div id="targetHz" style="font-weight:700; font-size:17px;">— Hz</div>
+        </div>
+        <div class="pill">
+          <div class="small">Sai số</div>
+          <div id="detune" style="font-weight:700; font-size:17px;">—¢</div>
+        </div>
+      </div>
+      <div class="small" id="stabilityTxt" style="margin-top:4px;">Độ ổn định: —%</div>
+
+      <div id="adviceBox" class="advice-box" style="background:#f9fafb; border:1px dashed #cbd5f5;">
+        <div id="adviceTitle" class="advice-title">Chưa có dữ liệu đủ ổn định.</div>
+        <div id="adviceDetail" class="small">
+          Hãy gõ chiêng 2–3 lần, giữ khoảng cách mic cố định để hệ thống bắt được âm ổn định rồi đưa ra gợi ý.
+        </div>
+      </div>
+
+      <div style="margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button id="btnQuickDecay" class="btn ghost sm" style="flex:1 1 140px;">⏱ Đo độ ngân nhanh (RT60)</button>
+        <span class="small" style="flex:1 1 160px;">Bấm rồi gõ 1 phát, để chiêng ngân tự nhiên ~5s.</span>
+      </div>
+    </div>
+
+    <!-- Phổ & Centroid -->
+    <div class="card">
+      <div style="display:flex; align-items:baseline; justify-content:space-between;">
+        <div>
+          <div class="label">Phổ & trung tâm phổ</div>
+          <div style="font-weight:700; font-size:17px;">Centroid: <span id="centroidHz">—</span> Hz</div>
+        </div>
+        <div class="small">dBFS</div>
+      </div>
+      <div style="margin-top:8px;">
+        <canvas id="specCanvas"></canvas>
+      </div>
+      <div class="small" style="margin-top:4px;">
+        Nếu đã tải file, ưu tiên hiển thị phổ của file. Khi bật Mic, chuyển sang phổ live.
+      </div>
+    </div>
+  </section>
+
+  <!-- HÀNG 4: Bảng chiêng + RT60 -->
+  <section class="row cols-2" style="margin-bottom:12px;">
+    <div class="card">
+      <div class="label" style="margin-bottom:4px;">Bộ chiêng hiện tại</div>
+      <div style="max-height:260px; overflow:auto;">
+        <table>
+          <thead>
+          <tr><th>Nhãn</th><th>Hz</th><th>Chọn</th></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+        <div style="flex:1 1 150px;">
+          <div class="label">Độ ngân (RT60) – Mic</div>
+          <div class="small">Bấm “Bắt đầu đo” rồi gõ một phát, để chiêng ngân tự nhiên trong khoảng 4–6s.</div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; width:100%; max-width:260px;">
+          <button id="btnStartDecay" class="btn sm" style="flex:1 1 120px;">▶ Bắt đầu đo</button>
+          <button id="btnStopDecay" class="btn ghost sm" style="flex:1 1 120px;">⏹ Kết thúc</button>
+        </div>
+      </div>
+      <div class="row cols-3">
+        <div class="pill">
+          <div class="small">RT60 (mic)</div>
+          <div id="rt60Mic" style="font-weight:700; font-size:17px;">—</div>
+        </div>
+        <div class="pill">
+          <div class="small">Phương pháp</div>
+          <div id="rtMethod" style="font-weight:600;">—</div>
+        </div>
+        <div class="pill">
+          <div class="small">RT60 (file)</div>
+          <div id="rt60File" style="font-weight:700; font-size:17px;">—</div>
+        </div>
+      </div>
+      <div class="small" style="margin-top:4px;">
+        RT60 là giá trị tương đối, phụ thuộc không gian/thiết bị. Nên đo 3–5 lần và lấy trung vị để đánh giá.
+      </div>
+    </div>
+  </section>
+
+  <!-- HÀNG 5: Ghi chú -->
+  <section class="card small">
+    <div style="font-weight:600; margin-bottom:4px;">Gợi ý kỹ thuật</div>
+    <ul style="margin:0 0 0 18px; padding:0; line-height:1.6;">
+      <li>Centroid cao → âm sáng hơn; centroid thấp → âm trầm/tối hơn.</li>
+      <li>So sánh centroid & RT60 giữa các chiêng cùng bậc để chọn chiêng đồng đều.</li>
+      <li>Nên đo nhiều lần cho mỗi chiêng rồi lấy trung bình/median để quyết định.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+/* ==== Utility ==== */
+const clamp=(v,min,max)=>Math.min(max,Math.max(min,v));
+const log2=(x)=>Math.log(x)/Math.log(2);
+const centsDiff=(f,ref)=>(ref>0&&f>0?1200*log2(f/ref):0);
+const EPS=1e-12;
+const toDB=(x)=>20*Math.log10(Math.max(x,EPS));
+const fromDB=(db)=>Math.pow(10, db/20);
+function rms(buf){
+  let s=0;
+  for(let i=0;i<buf.length;i++) s+=buf[i]*buf[i];
+  return Math.sqrt(s/buf.length);
+}
+
+/* Cố gắng kéo f đo được về bậc hài gần với target nhất */
+function snapToTargetHarmonic(f, target) {
+  if (!f || !isFinite(f) || !target || !isFinite(target) || target <= 0) return f;
+  const ratio = f / target;
+  if (ratio > 0.8 && ratio < 1.2) return f;
+
+  let bestF = f;
+  let bestDiff = Math.abs(f - target);
+
+  for (let n = 2; n <= 6; n++) {
+    const down = f / n;
+    const up   = f * n;
+    const cand = [down, up];
+    for (const cf of cand) {
+      if (cf <= 0 || !isFinite(cf)) continue;
+      const diff = Math.abs(cf - target);
+      if (diff < bestDiff * 0.6) {
+        bestDiff = diff;
+        bestF = cf;
+      }
+    }
+  }
+  return bestF;
+}
+
+/* ==== Local Storage (Bộ chiêng) ==== */
+const LS_KEY='cong-chieng-tuner-sets-v2-html';
+const DEFAULT_SET={
+  id:'set-default',
+  name:'Bộ chiêng mẫu (tham khảo)',
+  items:[
+    {id:'chieng-cha',label:'Chiêng Cha',freq:110},
+    {id:'chieng-me',label:'Chiêng Mẹ',freq:130.81},
+    {id:'chieng-1',label:'Chiêng 1',freq:146.83},
+    {id:'chieng-2',label:'Chiêng 2',freq:174.61},
+    {id:'chieng-3',label:'Chiêng 3',freq:196.00},
+    {id:'chieng-4',label:'Chiêng 4',freq:233.08},
+  ]
+};
+function loadSets(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(!raw) return [DEFAULT_SET];
+    const j=JSON.parse(raw);
+    return j && j.length? j:[DEFAULT_SET];
+  }catch{return [DEFAULT_SET];}
+}
+function saveSets(s){ try{localStorage.setItem(LS_KEY,JSON.stringify(s));}catch{} }
+
+/* ==== Pitch detection ==== */
+function estimatePitchAutoCorrelation(buf, sr){
+  const N = buf.length;
+  if (N < 1024) return { f0: null, quality: 0 };
+
+  let mean = 0;
+  for (let i = 0; i < N; i++) mean += buf[i];
+  mean /= N;
+  const w = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const win = 0.5 * (1 - Math.cos(2 * Math.PI * i / (N - 1)));
+    w[i] = (buf[i] - mean) * win;
+  }
+
+  const acf = new Float32Array(N);
+  for (let lag = 0; lag < N; lag++) {
+    let s = 0;
+    for (let i = 0; i < N - lag; i++) s += w[i] * w[i + lag];
+    acf[lag] = s;
+  }
+
+  const minF = 80;
+  const maxF = 800;
+  let startLag = Math.floor(sr / maxF); if (startLag < 2) startLag = 2;
+  const minLag = Math.floor(sr / minF);
+
+  const norm = acf[0] || 1;
+  let peakLag = -1;
+  let peakVal = -Infinity;
+
+  for (let lag = startLag; lag < Math.min(minLag, N - 1); lag++) {
+    const v = acf[lag] / norm;
+    if (v > peakVal) {
+      peakVal = v;
+      peakLag = lag;
+    }
+  }
+
+  if (peakLag <= 0) return { f0: null, quality: 0 };
+
+  const i = peakLag;
+  const y0 = acf[i - 1] || acf[i];
+  const y1 = acf[i];
+  const y2 = acf[i + 1] || acf[i];
+  const denom = (y0 - 2 * y1 + y2);
+  let shift = 0;
+  if (Math.abs(denom) > 1e-12) shift = 0.5 * (y0 - y2) / denom;
+  const refined = i + shift;
+  const f = sr / refined;
+  const quality = peakVal;
+
+  if (!isFinite(f) || f <= 0) return { f0: null, quality: 0 };
+  return { f0: f, quality };
+}
+
+function estimatePitchMultiFrame(buf, sr) {
+  const N = buf.length;
+  const minLen = 2048;
+  if (N < minLen) return { f0: null, quality: 0 };
+
+  const windowSize = Math.floor(N * 0.6);
+  const step = Math.max(1, Math.floor((N - windowSize) / 2));
+  const freqs = [];
+  const quals = [];
+
+  for (let start = 0; start + windowSize <= N; start += step) {
+    const sub = buf.subarray(start, start + windowSize);
+    const { f0, quality } = estimatePitchAutoCorrelation(sub, sr);
+    if (f0 && isFinite(f0) && quality >= 0.35) {
+      freqs.push(f0);
+      quals.push(quality);
+    }
+  }
+
+  if (!freqs.length) return { f0: null, quality: 0 };
+
+  freqs.sort((a, b) => a - b);
+  const mid = freqs[Math.floor(freqs.length / 2)];
+  const avgQ = quals.reduce((a, b) => a + b, 0) / (quals.length || 1);
+
+  return { f0: mid, quality: avgQ };
+}
+
+/* ==== EMA ==== */
+class EMA{
+  constructor(a=.25){ this.a=a; this.y=null; }
+  push(x){
+    if(x==null || !isFinite(x)) return this.y;
+    this.y = this.y==null? x : this.a*x + (1-this.a)*this.y;
+    return this.y;
+  }
+}
+
+/* ==== FFT & phổ ==== */
+function nextPow2(n){ let p=1; while(p<n) p<<=1; return p; }
+function hannWindow(N){ const w=new Float32Array(N); for(let i=0;i<N;i++) w[i]=0.5*(1-Math.cos(2*Math.PI*i/(N-1))); return w; }
+function fftComplex(re,im){
+  const n=re.length; let i=0,j=0;
+  for(i=0;i<n;i++){
+    if(j>i){
+      let tr=re[j]; re[j]=re[i]; re[i]=tr;
+      let ti=im[j]; im[j]=im[i]; im[i]=ti;
+    }
+    let m=n>>1;
+    while(m>=1 && j>=m){ j-=m; m>>=1; }
+    j+=m;
+  }
+  for(let len=2;len<=n;len<<=1){
+    const ang=-2*Math.PI/len;
+    const wRe=Math.cos(ang),wIm=Math.sin(ang);
+    for(let i2=0;i2<n;i2+=len){
+      let wr=1,wi=0;
+      for(let k=0;k<(len>>1);k++){
+        const uRe=re[i2+k],uIm=im[i2+k];
+        const vRe=re[i2+k+(len>>1)]*wr - im[i2+k+(len>>1)]*wi;
+        const vIm=re[i2+k+(len>>1)]*wi + im[i2+k+(len>>1)]*wr;
+        re[i2+k]=uRe+vRe; im[i2+k]=uIm+vIm;
+        re[i2+k+(len>>1)]=uRe-vRe; im[i2+k+(len>>1)]=uIm-vIm;
+        const nwr=wr*wRe - wi*wIm; wi=wr*wIm + wi*wRe; wr=nwr;
+      }
+    }
+  }
+}
+function magSpectrum(signal,sr){
+  const N0=signal.length; const N=nextPow2(N0);
+  const win=hannWindow(Math.min(N0,N));
+  const re=new Float32Array(N), im=new Float32Array(N);
+  for(let i=0;i<Math.min(N0,N);i++) re[i]=signal[i]*win[i];
+  fftComplex(re,im);
+  const half=N/2; const mags=new Float32Array(half); const freqs=new Float32Array(half);
+  let maxMag=EPS;
+  for(let i=0;i<half;i++){
+    const m=Math.hypot(re[i],im[i]); mags[i]=m; if(m>maxMag) maxMag=m;
+    freqs[i]=(i/half)*(sr/2);
+  }
+  for(let i=0;i<half;i++) mags[i]=20*Math.log10(Math.max(mags[i]/maxMag,EPS));
+  return {freqs,mags};
+}
+function spectralCentroidFromMag(freqs,mags){
+  let num=0,den=0;
+  for(let i=0;i<freqs.length;i++){
+    const lin=Math.pow(10,mags[i]/20);
+    num+=freqs[i]*lin; den+=lin;
+  }
+  return den>0? num/den:0;
+}
+function estimateF0FromSpectrum(freqs,mags){
+  const minF=80, maxF=800;
+  let maxMag=-Infinity;
+  for(let i=0;i<freqs.length;i++){
+    if(freqs[i]<minF || freqs[i]>maxF) continue;
+    if(mags[i]>maxMag) maxMag=mags[i];
+  }
+  if(!isFinite(maxMag)) return null;
+  let threshold=maxMag-20;
+  let idx=-1;
+  for(let i=1;i<freqs.length-1;i++){
+    if(freqs[i]<minF || freqs[i]>maxF) continue;
+    if(mags[i]>=threshold && mags[i]>mags[i-1] && mags[i]>=mags[i+1]){
+      idx=i; break;
+    }
+  }
+  if(idx<0){
+    threshold=maxMag-30;
+    for(let i=1;i<freqs.length-1;i++){
+      if(freqs[i]<minF || freqs[i]>maxF) continue;
+      if(mags[i]>=threshold && mags[i]>mags[i-1] && mags[i]>=mags[i+1]){
+        idx=i; break;
+      }
+    }
+  }
+  if(idx<0) return null;
+  const alpha=mags[idx-1], beta=mags[idx], gamma=mags[idx+1];
+  const denom=(alpha-2*beta+gamma); let p=0;
+  if(Math.abs(denom)>1e-12) p=0.5*(alpha-gamma)/denom;
+  const df=freqs[idx+1]-freqs[idx];
+  const f=freqs[idx]+p*df;
+  return f;
+}
+
+/* ==== RT60 từ buffer ==== */
+function estimateRT60FromBuffer(buf,sr){
+  const hop=Math.floor(0.01*sr), win=Math.floor(0.05*sr);
+  const levels=[];
+  for(let p=0;p+win<=buf.length;p+=hop){
+    const sl=buf.subarray(p,p+win);
+    levels.push(toDB(rms(sl)));
+  }
+  if(levels.length<20) return {rt60:null,method:null};
+  const maxDb=Math.max(...levels);
+  const rel=levels.map((db,i)=>({t:i*0.01, db:db-maxDb}));
+  let lo=-35,hi=-5,method='T30×2';
+  let seg=rel.filter(d=>d.db<=hi && d.db>=lo);
+  if(seg.length<20){
+    lo=-25; hi=-5; method='T20×3';
+    seg=rel.filter(d=>d.db<=hi && d.db>=lo);
+  }
+  if(seg.length<10) return {rt60:null,method:null};
+  const x=seg.map(d=>d.t), y=seg.map(d=>d.db);
+  const slope=(y[y.length-1]-y[0])/(x[x.length-1]-x[0]+1e-9);
+  const rt60=-60/slope;
+  return {rt60,method};
+}
+
+/* ==== App State ==== */
+let audioCtx=null, analyser=null, fanalyser=null, micSource=null, micStream=null, raf=0;
+const timeBuf=new Float32Array(4096);
+const ema=new EMA(.25);
+let isRunning=false;
+let sets=loadSets();
+let activeSetId=sets[0].id;
+let activeItemId=sets[0].items[0]?.id;
+let isCapturingDecay=false; let decayStart=0; const decayData=[];
+let externalSpectrum=null;
+let fileSummary=null;
+
+let centsWindow=[];
+const CENTS_WINDOW_SIZE=15;
+let lastLevelDb=-Infinity;
+let lastSmoothF0=0;
+
+/* ==== DOM ==== */
+const selSet=document.getElementById('selSet');
+const selItem=document.getElementById('selItem');
+const inpTargetHz=document.getElementById('inpTargetHz');
+const btnAddSet=document.getElementById('btnAddSet');
+const btnAddItem=document.getElementById('btnAddItem');
+const btnStart=document.getElementById('btnStart');
+const btnStop=document.getElementById('btnStop');
+const btnRecordRef=document.getElementById('btnRecordRef');
+const measHzEl=document.getElementById('measHz');
+const targetHzEl=document.getElementById('targetHz');
+const detuneEl=document.getElementById('detune');
+const stabilityTxt=document.getElementById('stabilityTxt');
+const needleEl=document.getElementById('needle');
+const specCanvas=document.getElementById('specCanvas');
+const centroidHzEl=document.getElementById('centroidHz');
+const tableBody=document.getElementById('tableBody');
+const fileInput=document.getElementById('fileInput');
+const fileSummaryBox=document.getElementById('fileSummary');
+const sumName=document.getElementById('sumName');
+const sumF0=document.getElementById('sumF0');
+const sumCentroid=document.getElementById('sumCentroid');
+const sumRT60=document.getElementById('sumRT60');
+const btnStartDecay=document.getElementById('btnStartDecay');
+const btnStopDecay=document.getElementById('btnStopDecay');
+const rt60Mic=document.getElementById('rt60Mic');
+const rtMethod=document.getElementById('rtMethod');
+const rt60File=document.getElementById('rt60File');
+const adviceBox=document.getElementById('adviceBox');
+const adviceTitle=document.getElementById('adviceTitle');
+const adviceDetail=document.getElementById('adviceDetail');
+const btnQuickDecay=document.getElementById('btnQuickDecay');
+const micStatus=document.getElementById('micStatus');
+
+/* Canvas cho phổ */
+function initSpectrumCanvas(){
+  const dpr=Math.max(1,window.devicePixelRatio||1);
+  const w=specCanvas.clientWidth || specCanvas.parentElement.clientWidth || 300;
+  const h=180;
+  specCanvas.width=Math.floor(w*dpr);
+  specCanvas.height=Math.floor(h*dpr);
+  specCanvas.style.height=h+'px';
+  const ctx=specCanvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+}
+initSpectrumCanvas();
+window.addEventListener('resize', ()=> {
+  initSpectrumCanvas();
+});
+
+/* Render Bộ chiêng */
+function renderSets(){
+  selSet.innerHTML=sets.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  selSet.value=activeSetId;
+  renderItems();
+}
+function renderItems(){
+  const set=sets.find(s=>s.id===activeSetId)||sets[0];
+  selItem.innerHTML=set.items.map(i=>`<option value="${i.id}">${i.label}</option>`).join('');
+  if(!set.items.find(i=>i.id===activeItemId)) activeItemId=set.items[0]?.id;
+  selItem.value=activeItemId;
+  const it=set.items.find(i=>i.id===activeItemId);
+  inpTargetHz.value=it? it.freq:0;
+  targetHzEl.textContent=it? it.freq.toFixed(2)+' Hz':'— Hz';
+  renderTable();
+}
+function renderTable(){
+  const set=sets.find(s=>s.id===activeSetId)||sets[0];
+  tableBody.innerHTML=set.items.map(it=>`
+    <tr>
+      <td><input data-id="${it.id}" data-kind="label" class="field" value="${it.label}"/></td>
+      <td><input data-id="${it.id}" data-kind="freq" class="field" type="number" step="0.01" value="${it.freq}"/></td>
+      <td><button data-id="${it.id}" data-kind="select" class="btn ghost sm" style="padding-inline:8px;">Chọn</button></td>
+    </tr>
+  `).join('');
+}
+function saveAndRender(){ saveSets(sets); renderSets(); }
+
+/* Giao diện điều khiển Bộ chiêng */
+btnAddSet.onclick=()=>{
+  const name=prompt('Tên bộ chiêng mới?'); if(!name) return;
+  const id='set-'+Date.now();
+  sets=[...sets,{id,name,items:[]}];
+  activeSetId=id;
+  saveAndRender();
+};
+btnAddItem.onclick=()=>{
+  const set=sets.find(s=>s.id===activeSetId);
+  const id='gong-'+Date.now();
+  set.items.push({id,label:'Chiêng mới',freq:150});
+  activeItemId=id;
+  saveAndRender();
+};
+selSet.onchange=e=>{
+  activeSetId=e.target.value;
+  renderItems();
+  saveSets(sets);
+};
+selItem.onchange=e=>{
+  activeItemId=e.target.value;
+  const set=sets.find(s=>s.id===activeSetId);
+  const it=set.items.find(i=>i.id===activeItemId);
+  inpTargetHz.value=it.freq;
+  targetHzEl.textContent=it.freq.toFixed(2)+' Hz';
+};
+document.addEventListener('input',e=>{
+  if(e.target===inpTargetHz){
+    const v=parseFloat(e.target.value)||0;
+    const set=sets.find(s=>s.id===activeSetId);
+    const it=set.items.find(i=>i.id===activeItemId);
+    it.freq=v;
+    targetHzEl.textContent=v? v.toFixed(2)+' Hz':'— Hz';
+    saveSets(sets);
+  }
+  if(e.target && e.target.dataset && e.target.dataset.kind){
+    const kind=e.target.dataset.kind;
+    const id=e.target.dataset.id;
+    const set=sets.find(s=>s.id===activeSetId);
+    const it=set.items.find(i=>i.id===id);
+    if(!it) return;
+    if(kind==='label') it.label=e.target.value;
+    if(kind==='freq') it.freq=parseFloat(e.target.value)||0;
+    saveSets(sets);
+    if(id===activeItemId && kind==='freq'){
+      targetHzEl.textContent=it.freq? it.freq.toFixed(2)+' Hz':'— Hz';
+    }
+  }
+});
+document.addEventListener('click',e=>{
+  if(e.target && e.target.dataset && e.target.dataset.kind==='select'){
+    activeItemId=e.target.dataset.id;
+    selItem.value=activeItemId;
+    const set=sets.find(s=>s.id===activeSetId);
+    const it=set.items.find(i=>i.id===activeItemId);
+    inpTargetHz.value=it.freq;
+    targetHzEl.textContent=it.freq.toFixed(2)+' Hz';
+  }
+});
+
+/* ====== Audio / Mic setup ====== */
+async function setupMicStream(stream){
+  micStream = stream;
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 4096;
+  analyser.smoothingTimeConstant = 0.0;
+
+  fanalyser = audioCtx.createAnalyser();
+  fanalyser.fftSize = 4096;
+  fanalyser.minDecibels = -100;
+  fanalyser.maxDecibels = -10;
+  fanalyser.smoothingTimeConstant = 0.7;
+
+  micSource = audioCtx.createMediaStreamSource(stream);
+  micSource.connect(analyser);
+  micSource.connect(fanalyser);
+}
+
+async function requestMicOnce(){
+  if(micSource && audioCtx) return;
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio:true
+    });
+    await setupMicStream(stream);
+    micStatus.textContent = 'Mic: đã cấp quyền, sẵn sàng đo.';
+  }catch(err){
+    console.warn('Không lấy được quyền mic:', err);
+    micStatus.textContent = 'Mic: lỗi hoặc bị từ chối (xem lại quyền trong trình duyệt).';
+    alert('Trình duyệt không cho dùng mic. Hãy kiểm tra:\n- Trang phải chạy trên https (ví dụ: https://khktbuithanhluan)\n- Trình duyệt đã cấp quyền microphone.');
+  }
+}
+
+/* Bật/Dừng tuner */
+btnStart.onclick = async () => {
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    alert('Trình duyệt này không hỗ trợ getUserMedia / microphone.');
+    return;
+  }
+  await requestMicOnce();
+  if(!audioCtx || !analyser){
+    return;
+  }
+  if(audioCtx.state === 'suspended'){
+    try{ await audioCtx.resume(); }catch(e){ console.warn('Resume AudioContext lỗi:', e); }
+  }
+  if(isRunning) return;
+  isRunning = true;
+  micStatus.textContent = 'Mic: đang đo (hãy gõ chiêng).';
+  tick();
+};
+
+btnStop.onclick = () => {
+  isRunning = false;
+  cancelAnimationFrame(raf);
+  micStatus.textContent = 'Mic: đã dừng đo.';
+};
+
+/* Ghi ~5s làm chuẩn */
+btnRecordRef.onclick = async () => {
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    alert('Trình duyệt này không hỗ trợ microphone.');
+    return;
+  }
+  await requestMicOnce();
+  if(!audioCtx || !analyser || !micSource){
+    alert('Mic chưa sẵn sàng.');
+    return;
+  }
+  if(audioCtx.state === 'suspended'){
+    try{ await audioCtx.resume(); }catch(e){ console.warn('Resume AudioContext lỗi:', e); }
+  }
+
+  if(!isRunning){
+    isRunning = true;
+    tick();
+  }
+
+  const samples = [];
+  const durationMs = 5000;
+  const start = performance.now();
+  const minLevelDb = -45;
+
+  function collect(){
+    if(!audioCtx || !analyser) return;
+    const now = performance.now();
+    if(now - start > durationMs || samples.length >= 200){
+      const valid = samples.filter(f => f > 0).sort((a,b)=>a-b);
+      const mid = valid.length ? valid[Math.floor(valid.length/2)] : 0;
+      if(mid > 0){
+        const set = sets.find(s=>s.id===activeSetId);
+        const it  = set.items.find(i=>i.id===activeItemId);
+        it.freq = Math.round(mid*100)/100;
+        saveSets(sets);
+        renderItems();
+        alert('Đã lấy chuẩn ≈ ' + it.freq.toFixed(2) + ' Hz cho ' + it.label);
+      }else{
+        alert('Không bắt được âm ổn định. Hãy gõ lại chiêng và thử “Ghi âm làm chuẩn” lần nữa.');
+      }
+      return;
+    }
+
+    if(lastSmoothF0 > 0 && lastLevelDb > minLevelDb){
+      samples.push(lastSmoothF0);
+    }
+    setTimeout(collect, 40);
+  }
+
+  samples.length = 0;
+  collect();
+};
+
+/* RT60 từ mic */
+btnStartDecay.onclick=()=>{
+  if(!audioCtx || !analyser){
+    alert('Mic chưa sẵn sàng hoặc chưa bấm Bắt đầu.');
+    return;
+  }
+  isCapturingDecay=true;
+  decayStart=performance.now();
+  decayData.length=0;
+  rt60Mic.textContent='—';
+  rtMethod.textContent='—';
+};
+btnStopDecay.onclick=finalizeDecay;
+btnQuickDecay.onclick=()=>btnStartDecay.click();
+
+function finalizeDecay(){
+  isCapturingDecay=false;
+  if(decayData.length<20){
+    rt60Mic.textContent='—';
+    rtMethod.textContent='—';
+    return;
+  }
+  const maxDb=Math.max(...decayData.map(d=>d.db));
+  const rel=decayData.map(d=>({t:d.t, db:d.db-maxDb}));
+  let lo=-35,hi=-5,method='T30×2';
+  let seg=rel.filter(d=>d.db<=hi && d.db>=lo);
+  if(seg.length<20){
+    lo=-25; hi=-5; method='T20×3';
+    seg=rel.filter(d=>d.db<=hi && d.db>=lo);
+  }
+  if(seg.length<10){
+    rt60Mic.textContent='—';
+    rtMethod.textContent='—';
+    return;
+  }
+  const x=seg.map(d=>d.t), y=seg.map(d=>d.db);
+  const slope=(y[y.length-1]-y[0])/(x[x.length-1]-x[0]+1e-9);
+  const rt60=-60/slope;
+  if(rt60>0 && isFinite(rt60)){
+    rt60Mic.textContent=rt60.toFixed(2)+' s';
+    let cat='';
+    if(rt60<0.8) cat='– Độ ngân ngắn (chiêng ít vang)';
+    else if(rt60<1.6) cat='– Độ ngân vừa (phù hợp nhiều hoàn cảnh)';
+    else cat='– Độ ngân dài (chiêng vang nhiều, hợp nghi lễ lớn)';
+    rtMethod.textContent=method+' '+cat;
+  }else{
+    rt60Mic.textContent='—';
+    rtMethod.textContent=method;
+  }
+}
+
+/* Upload file – phân tích phổ */
+fileInput.addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0]; if(!f) return;
+  try{
+    const arr=await f.arrayBuffer();
+    const ctx=audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const decoded=await ctx.decodeAudioData(arr.slice(0));
+    const ch=decoded.getChannelData(0);
+    const sr=decoded.sampleRate;
+
+    const totalDur=decoded.duration;
+    const segDur=Math.min(1.0,totalDur*0.6);
+    const startTime=totalDur>1.5? totalDur*0.2 : Math.max(0,(totalDur-segDur)/2);
+    const startSample=Math.floor(startTime*sr);
+    const segSamples=Math.min(Math.floor(segDur*sr), ch.length-startSample);
+    const seg=ch.subarray(startSample,startSample+segSamples);
+
+    const {freqs,mags}=magSpectrum(seg,sr);
+    let f0Spec=estimateF0FromSpectrum(freqs,mags);
+    const centroid=spectralCentroidFromMag(freqs,mags);
+    const {rt60,method}=estimateRT60FromBuffer(ch,sr);
+
+    const set=sets.find(s=>s.id===activeSetId);
+    const it=set ? set.items.find(i=>i.id===activeItemId) : null;
+    const target=it ? it.freq : 0;
+    f0Spec=snapToTargetHarmonic(f0Spec,target);
+
+    externalSpectrum={freqs:Array.from(freqs), mags:Array.from(mags)};
+    fileSummary={name:f.name,f0:f0Spec||0,centroid,rt60,method};
+
+    fileSummaryBox.style.display='grid';
+    sumName.textContent=f.name;
+    sumF0.textContent=f0Spec? f0Spec.toFixed(2)+' Hz':'—';
+    sumCentroid.textContent=centroid? centroid.toFixed(1)+' Hz':'—';
+    sumRT60.textContent=rt60? rt60.toFixed(2)+' s':'—';
+    rt60File.textContent=rt60? rt60.toFixed(2)+' s':'—';
+    centroidHzEl.textContent=centroid? centroid.toFixed(1):'—';
+
+    drawSpectrum();
+
+    if(f0Spec>0 && it){
+      if(confirm(`Phát hiện f0 (từ phổ) ≈ ${f0Spec.toFixed(2)} Hz.\nĐặt làm tần số mục tiêu cho "${it.label}"?`)){
+        it.freq=Math.round(f0Spec*100)/100;
+        saveSets(sets);
+        renderItems();
+      }
+    }
+  }catch(err){
+    console.error(err);
+    alert('Không thể phân tích file âm thanh. Vui lòng dùng WAV/MP3 hợp lệ.');
+  }
+});
+
+/* Vẽ phổ */
+function drawSpectrum(){
+  const ctx=specCanvas.getContext('2d');
+  const w=specCanvas.clientWidth, h=180;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#f8fafb';
+  ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle='#e2e8f0';
+  ctx.beginPath(); ctx.moveTo(0,h-0.5); ctx.lineTo(w,h-0.5); ctx.stroke();
+
+  if(externalSpectrum){
+    const freqs=externalSpectrum.freqs, mags=externalSpectrum.mags;
+    const ny=Math.max(...freqs);
+    ctx.beginPath();
+    for(let i=0;i<freqs.length;i++){
+      const x=(freqs[i]/ny)*w;
+      const y=h - (Math.min(Math.max(mags[i],-100),-10)+100)/90*h;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='#2563eb';
+    ctx.lineWidth=1.4;
+    ctx.stroke();
+    const centroid=parseFloat(centroidHzEl.textContent)||0;
+    const cx=(centroid/ny)*w;
+    ctx.setLineDash([4,3]); ctx.strokeStyle='#94a3b8';
+    ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,h); ctx.stroke();
+    ctx.setLineDash([]);
+    return;
+  }
+
+  if(!fanalyser || !audioCtx) return;
+  const N=fanalyser.frequencyBinCount;
+  const fb=new Float32Array(N);
+  fanalyser.getFloatFrequencyData(fb);
+  const ny=(audioCtx.sampleRate||48000)/2;
+  let num=0,den=0;
+  for(let i=0;i<N;i++){
+    const f=(i/N)*ny;
+    const mag=fromDB(fb[i]-fanalyser.minDecibels);
+    num+=f*mag; den+=mag;
+  }
+  const centroid=den>0? num/den:0;
+  centroidHzEl.textContent=centroid? centroid.toFixed(1):'—';
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const x=(i/(N-1))*w;
+    const y=h - (Math.min(Math.max(fb[i],-100),-10)+100)/90*h;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='#2563eb';
+  ctx.lineWidth=1.4;
+  ctx.stroke();
+  const cx=(centroid/ny)*w;
+  ctx.setLineDash([4,3]); ctx.strokeStyle='#94a3b8';
+  ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,h); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+/* Gợi ý chỉnh sửa */
+function updateAdvice(smoothFreq, targetFreq, cents, stability){
+  const hasTarget = targetFreq > 0;
+  const enoughSamples = centsWindow.length >= 5;
+  const hasPitch = smoothFreq > 0;
+
+  const diffHz   = (hasPitch && hasTarget) ? (smoothFreq - targetFreq) : 0;
+  const absHz    = Math.abs(diffHz);
+  const absCents = Math.abs(cents || 0);
+
+  if (!hasTarget) {
+    adviceBox.style.background = '#f9fafb';
+    adviceBox.style.border = '1px dashed #cbd5f5';
+    adviceTitle.textContent = 'Chưa có chuẩn để so sánh.';
+    adviceDetail.textContent = 'Hãy nhập Tần số mục tiêu (Hz) hoặc bấm “Ghi âm làm chuẩn (≈5s)” trước.';
+    return;
+  }
+
+  if (!hasPitch || !enoughSamples) {
+    adviceBox.style.background = '#f9fafb';
+    adviceBox.style.border = '1px dashed #cbd5f5';
+    adviceTitle.textContent = 'Chưa có dữ liệu đủ ổn định.';
+    adviceDetail.textContent = 'Hãy gõ chiêng 2–3 lần, giữ khoảng cách mic cố định để hệ thống bắt được âm ổn định.';
+    return;
+  }
+
+  let status = '';
+  let colorBg = '';
+  let colorBorder = '';
+  let detail = '';
+
+  if (absHz <= 5) {
+    status      = 'ĐÃ GẦN NHƯ CHUẨN';
+    colorBg     = '#dcfce7';
+    colorBorder = '#16a34a';
+    detail      = `Chiêng gần trùng với chuẩn. Độ lệch ≈ ${diffHz.toFixed(2)} Hz (${cents.toFixed(1)}¢). Với dàn chiêng thực tế, mức này đã có thể xem là đạt.`;
+  } else if (absHz <= 15) {
+    status      = diffHz < 0 ? 'HƠI TRẦM' : 'HƠI CAO';
+    colorBg     = '#fef9c3';
+    colorBorder = '#eab308';
+    detail      = `Chiêng đang ${diffHz < 0 ? 'trầm hơn' : 'cao hơn'} chuẩn ≈ ${absHz.toFixed(2)} Hz (${absCents.toFixed(1)}¢). Nên nghe thử cùng các chiêng khác trong dàn – nếu cảm giác vẫn hoà thì có thể giữ nguyên, nếu “gợn” thì chỉnh nhẹ.`;
+  } else if (absHz <= 30) {
+    status      = diffHz < 0 ? 'LỆCH THẤY RÕ – TRẦM' : 'LỆCH THẤY RÕ – CAO';
+    colorBg     = '#fee2e2';
+    colorBorder = '#f97316';
+    detail      = `Chiêng ${diffHz < 0 ? 'trầm hơn' : 'cao hơn'} khá rõ ≈ ${absHz.toFixed(2)} Hz (${absCents.toFixed(1)}¢). Nên tham khảo nghệ nhân để chỉnh vật lý hoặc cân nhắc đổi chiêng khác.`;
+  } else {
+    status      = 'LỆCH NHIỀU – CHỈ NÊN DÙNG RIÊNG LẺ';
+    colorBg     = '#fee2e2';
+    colorBorder = '#dc2626';
+    detail      = `Sai số lớn ≈ ${absHz.toFixed(2)} Hz (${absCents.toFixed(1)}¢). Chiêng này khó hoà trong dàn nếu chưa chỉnh sửa lại, chỉ nên dùng cho mục đích riêng lẻ.`;
+  }
+
+  adviceBox.style.background = colorBg;
+  adviceBox.style.border     = '1px solid ' + colorBorder;
+  adviceTitle.textContent    = status;
+  adviceDetail.textContent   = detail;
+}
+
+/* Loop realtime */
+function getActiveItem(){
+  const set=sets.find(s=>s.id===activeSetId);
+  if(!set) return null;
+  return set.items.find(i=>i.id===activeItemId)||null;
+}
+
+function tick(){
+  if (!isRunning || !audioCtx || !analyser) return;
+
+  analyser.getFloatTimeDomainData(timeBuf);
+  const sr = audioCtx.sampleRate;
+  let buf = timeBuf;
+  let effSr = sr;
+
+  if (sr > 32000) {
+    const half = new Float32Array(timeBuf.length / 2);
+    for (let i = 0; i < half.length; i++) half[i] = timeBuf[i * 2];
+    buf = half;
+    effSr = sr / 2;
+  }
+
+  const item   = getActiveItem();
+  const target = item ? item.freq : 0;
+
+  const level = rms(timeBuf);
+  const levelDb = toDB(level);
+  lastLevelDb = levelDb;
+
+  let rawF0 = null;
+  let quality = 0;
+
+  if (levelDb > -60) {
+    const res = estimatePitchMultiFrame(buf, effSr);
+    rawF0 = res.f0;
+    quality = res.quality || 0;
+  }
+
+  if (!rawF0 || !isFinite(rawF0) || quality < 0.35) {
+    rawF0 = null;
+  }
+
+  let f0 = snapToTargetHarmonic(rawF0, target);
+  const smooth = ema.push(f0);
+  lastSmoothF0 = smooth || 0;
+
+  let conf = quality;
+  if (f0 && smooth) {
+    const dev = Math.abs(f0 - smooth) / (smooth + 1e-6);
+    const stableFactor = 1 / (1 + dev);
+    conf = 0.6 * quality + 0.4 * stableFactor;
+  }
+
+  const rawCents = centsDiff(smooth || 0, target || 0);
+
+  if (smooth && target) {
+    centsWindow.push(rawCents);
+    if (centsWindow.length > CENTS_WINDOW_SIZE) centsWindow.shift();
+  }
+
+  measHzEl.textContent = smooth ? smooth.toFixed(2) + ' Hz' : '— Hz';
+  detuneEl.textContent = isFinite(rawCents) ? rawCents.toFixed(1) + '¢' : '—¢';
+  stabilityTxt.textContent = 'Độ ổn định: ' + Math.round((conf || 0) * 100) + '%';
+
+  needleEl.style.transform = 'rotate(' + (clamp(rawCents, -100, 100) * 0.9) + 'deg)';
+
+  if (isCapturingDecay) {
+    const t = (performance.now() - decayStart) / 1000;
+    const levelDb2 = toDB(rms(timeBuf));
+    decayData.push({ t, db: levelDb2 });
+    if (t >= 5) finalizeDecay();
+  }
+
+  let avgCents = 0;
+  if (centsWindow.length) {
+    avgCents = centsWindow.reduce((a, b) => a + b, 0) / centsWindow.length;
+  }
+  updateAdvice(smooth || 0, target || 0, avgCents || 0, conf || 0);
+
+  externalSpectrum = null;
+  drawSpectrum();
+
+  raf = requestAnimationFrame(tick);
+}
+
+/* init */
+renderSets();
+</script>
+</body>
+</html>
